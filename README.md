@@ -42,3 +42,24 @@ Can reset by presssing F7 and be transported to nearest repair station
 FOUND THE CONSOLE COMMANDS!!! `~/.local/share'American Truck Simulator'`
 
 Finally got a truck to work with
+
+## Day 3 - 2 Hours
+
+Finally got the delievery done. $250k later and we're good to start programming just need to fix my rig....
+
+Oh my. Do not press F9 while it in the air. It will drop your truck from very high up causing a godo amount of damage.
+Just need to figure how to teleport properly now. 
+
+Free cam! Move to ground and teleport truck. Except I need a numpad to do that. Cool, luckily I have a wireless keyboard
+laying around that my wife hasn't thrown out yet. Pair that and.. it worked! Which also means I should be able to make
+huge deliveries in secs. Woo hoo! 
+
+Let's figure out this whole video thing here soon. 
+
+And... actually starting in programming. First step, getting the video from the game. Initial attempts were not good.
+ImageGrab is apparently only for Windows and Mac and doesn't work on Linux. Which is odd because it works on Mac. Oh
+well, time to find an alternative
+
+Yes! Exactly what I was looking for - https://python-mss.readthedocs.io/examples.html#opencv-numpy This guy must be
+watching the same tutorial I am. That page references the tutorial that I'm working with. Appears to work well enough
+and looks like it is returning frame rates of 150-200 FPS. Which seems suspect, but I'll check that out later
