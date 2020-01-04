@@ -65,3 +65,6 @@ watching the same tutorial I am. That page references the tutorial that I'm work
 and looks like it is returning frame rates of 150-200 FPS. Which seems suspect, but I'll check that out later
 
 Got the controls working for the game. Pyautogui was good enough for me, so I'm going to stick with it. 
+
+Changing the ROI to be the just the area of interest. Duh. Installed mod to move the position of the GPS so program can
+see the whole lanes

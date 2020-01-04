@@ -23,8 +23,9 @@ def process_image(image):
     processed_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     processed_image = cv2.Canny(
         processed_image, threshold1=100, threshold2=300)
-    # TODO edit this!
-    vertices = np.array([[10, 500], [10, 300], [300, 200], [500, 200], [800, 300], [800, 500],
+    aaa = 340
+    topmost_y = 270
+    vertices = np.array([[10, 768], [10, aaa], [212, aaa], [212, topmost_y], [812, topmost_y], [812, aaa], [1024, aaa], [1024, 768],
                          ], np.int32)
     processed_image = roi(processed_image, [vertices])
     return processed_image
