@@ -63,3 +63,5 @@ well, time to find an alternative
 Yes! Exactly what I was looking for - https://python-mss.readthedocs.io/examples.html#opencv-numpy This guy must be
 watching the same tutorial I am. That page references the tutorial that I'm working with. Appears to work well enough
 and looks like it is returning frame rates of 150-200 FPS. Which seems suspect, but I'll check that out later
+
+Got the controls working for the game. Pyautogui was good enough for me, so I'm going to stick with it. 
