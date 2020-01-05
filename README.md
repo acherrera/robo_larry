@@ -43,7 +43,7 @@ FOUND THE CONSOLE COMMANDS!!! `~/.local/share'American Truck Simulator'`
 
 Finally got a truck to work with
 
-## Day 3 - 2 Hours
+## Day 3 - 3 Hours
 
 Finally got the delievery done. $250k later and we're good to start programming just need to fix my rig....
 
@@ -68,3 +68,9 @@ Got the controls working for the game. Pyautogui was good enough for me, so I'm 
 
 Changing the ROI to be the just the area of interest. Duh. Installed mod to move the position of the GPS so program can
 see the whole lanes
+
+
+## Day 4 - 1 hours
+
+Okay, this morning I was just editing video. Got most of the first video done. Would like to start work on line
+detection this afternoon if possible.
