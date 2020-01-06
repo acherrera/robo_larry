@@ -70,7 +70,10 @@ Changing the ROI to be the just the area of interest. Duh. Installed mod to move
 see the whole lanes
 
 
-## Day 4 - 1 hours
+## Day 4 - 3 hours
 
 Okay, this morning I was just editing video. Got most of the first video done. Would like to start work on line
 detection this afternoon if possible.
+
+Spent a good amount of time diagnosing a new gaming headset that should hopefully increase the audio quality. Turns out
+I didn't plug it in correctly.... ugh. Did second video on controls and uploaded first video
