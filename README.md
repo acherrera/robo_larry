@@ -77,3 +77,12 @@ detection this afternoon if possible.
 
 Spent a good amount of time diagnosing a new gaming headset that should hopefully increase the audio quality. Turns out
 I didn't plug it in correctly.... ugh. Did second video on controls and uploaded first video
+
+## Day 5 - 1.5 hour
+
+Trying to get the frames to process reasonably fast. Trying to fix lines result is 1 frames a second instead of 100+
+FPS. Which is really bad.
+
+Updated the FPS to about 60 by copying and pasting the code from sentdex's tutorial. No idea why / how it fixed it. I'm
+guessing I was doing some double processing or something. Oh well. Need to tune the parameter to get it to correctly
+recogonize the lines. Currently not recogonizing them, but it is working on the menu screens so it is at least trying. 
