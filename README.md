@@ -105,3 +105,8 @@ one line to detecting many lines as I would expect it to. Very short day, but ra
 
 [before_hist]: ./docfiles/equalizeHistEffect/before_equalizeHist.png
 [after_hist]: ./docfiles/equalizeHistEffect/after_equalizeHist.png
+
+## Day 7 - 0.5 hours
+
+Attempted to add the lane finding function into the program. Did not get very with it - unable to find any lines. Will
+want to look over program and update later
