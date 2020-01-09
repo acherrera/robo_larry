@@ -29,15 +29,18 @@ def draw_lines(img,lines):
 
 def process_img(original_image):
     processed_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
-    processed_img = cv2.Canny(processed_img, threshold1=200, threshold2=300)
+    processed_img = cv2.equalizeHist(processed_img)
+    processed_img = cv2.Canny(processed_img, threshold1=100, threshold2=200)
     vertices = np.array([[10,500],[10,300],[300,200],[500,200],[800,300],[800,500],
                          ], np.int32)
     processed_img = roi(processed_img, [vertices])
 # more info: http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_houghlines/py_houghlines.html
     #                          edges       rho   theta   thresh         # min length, max gap:        
-    lines = cv2.HoughLinesP(processed_img, 1, np.pi/180, 180,      20,         15)
+    lines = cv2.HoughLinesP(processed_img, 1, np.pi/180, 200)
     line_count = draw_lines(processed_img,lines)
     return processed_img, line_count
+
+    return processed_img, 0
 
 
 def main():

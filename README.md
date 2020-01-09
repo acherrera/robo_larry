@@ -86,3 +86,22 @@ FPS. Which is really bad.
 Updated the FPS to about 60 by copying and pasting the code from sentdex's tutorial. No idea why / how it fixed it. I'm
 guessing I was doing some double processing or something. Oh well. Need to tune the parameter to get it to correctly
 recogonize the lines. Currently not recogonizing them, but it is working on the menu screens so it is at least trying. 
+
+## Day 6 - 0.25 hours
+
+Getting the contrast to work much better. Was barely picking up on the lines before so I went in an looked at the raw
+grayscale image. 
+
+
+Before 
+![Image before equalizeHist applied][before_hist]
+
+After
+![Image after equalizeHist applied][after_hist]
+
+As you can see this made a HUGE difference in the raw Grayscale image. After this change it went from detecting maybe
+one line to detecting many lines as I would expect it to. Very short day, but rather productive
+
+
+[before_hist]: ./docfiles/equalizeHistEffect/before_equalizeHist.png
+[after_hist]: ./docfiles/equalizeHistEffect/after_equalizeHist.png
