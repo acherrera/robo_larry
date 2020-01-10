@@ -65,11 +65,13 @@ def process_img(original_image):
 
     lines = cv2.HoughLinesP(processed_img, 1, np.pi / 180, 180, 20, 15)
     try:
+        import pudb; pudb.set_trace()
         l1, l2 = draw_lanes(original_image, lines)
         cv2.line(original_image, (l1[0], l1[1]), (l1[2], l1[3]), [0, 255, 0], 30)
         cv2.line(original_image, (l2[0], l2[1]), (l2[2], l2[3]), [0, 255, 0], 30)
     except Exception as e:
-        print(str(e))
+        raise
+        logger.error(f"Error break 1: {str(e)}")
         pass
     try:
         for coords in lines:
@@ -84,13 +86,11 @@ def process_img(original_image):
                 )
 
             except Exception as e:
-                print(str(e))
+                logger.error(f"Error break 2: {str(e)}")
     except Exception as e:
         pass
 
     return processed_img, original_image
-
-    return processed_img, line_count
 
 
 def main():

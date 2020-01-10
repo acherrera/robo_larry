@@ -1,3 +1,10 @@
+import logging
+from numpy import ones, vstack
+from numpy.linalg import lstsq
+from statistics import mean
+
+logger = logging.getLogger(__name__)
+
 
 def draw_lanes(img, lines, color=[0, 255, 255], thickness=3):
 
@@ -78,11 +85,12 @@ def draw_lanes(img, lines, color=[0, 255, 255], thickness=3):
                 y1s.append(data[2][1])
                 x2s.append(data[2][2])
                 y2s.append(data[2][3])
-            return int(mean(x1s)), int(mean(y1s)), int(mean(x2s)), int(mean(y2s)) 
+            return int(mean(x1s)), int(mean(y1s)), int(mean(x2s)), int(mean(y2s))
 
         l1_x1, l1_y1, l1_x2, l1_y2 = average_lane(final_lanes[lane1_id])
         l2_x1, l2_y1, l2_x2, l2_y2 = average_lane(final_lanes[lane2_id])
 
         return [l1_x1, l1_y1, l1_x2, l1_y2], [l2_x1, l2_y1, l2_x2, l2_y2]
+
     except Exception as e:
-        print(str(e))
+        logger.error(str(e))

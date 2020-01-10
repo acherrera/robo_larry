@@ -2,3 +2,4 @@ numpy
 pillow
 opencv-python
 pyautogui
+mss
