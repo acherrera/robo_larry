@@ -35,9 +35,10 @@ def draw_lines(img, lines):
 def process_img(original_image):
     processed_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
     processed_img = cv2.equalizeHist(processed_img)
-    processed_img = cv2.Canny(processed_img, threshold1=100, threshold2=200)
+    processed_img = cv2.Canny(processed_img, threshold1=300, threshold2=350)
 
-    y_max = 768
+    # Region of Interest Definitions
+    y_max = 745
     x_max = 1024
     mirror1_x = 200
     mirror_y = 350
@@ -59,20 +60,20 @@ def process_img(original_image):
     processed_img = roi(processed_img, [vertices])
     # more info: http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_houghlines/py_houghlines.html
     #                          edges       rho   theta   thresh         # min length, max gap:
-    lines = cv2.HoughLinesP(processed_img, 1, np.pi / 180, 200)
+
+    processed_img = cv2.blur(processed_img,(2,2))
+    lines = cv2.HoughLinesP(processed_img, 1, np.pi / 180, 200, None, 0, 0)
     line_count = draw_lines(processed_img, lines)
 
 
-    lines = cv2.HoughLinesP(processed_img, 1, np.pi / 180, 180, 20, 15)
     try:
-        import pudb; pudb.set_trace()
         l1, l2 = draw_lanes(original_image, lines)
+        logger.debug(f"Line are {l1} and {l2}")
         cv2.line(original_image, (l1[0], l1[1]), (l1[2], l1[3]), [0, 255, 0], 30)
         cv2.line(original_image, (l2[0], l2[1]), (l2[2], l2[3]), [0, 255, 0], 30)
     except Exception as e:
-        raise
-        logger.error(f"Error break 1: {str(e)}")
-        pass
+        logger.error(f"Break 2 had error: {str(e)}")
+
     try:
         for coords in lines:
             coords = coords[0]
@@ -88,9 +89,12 @@ def process_img(original_image):
             except Exception as e:
                 logger.error(f"Error break 2: {str(e)}")
     except Exception as e:
-        pass
+        logger.error(f"Error break 3: {str(e)}")
 
-    return processed_img, original_image
+    if lines is None:
+        lines = list()
+
+    return processed_img, original_image, len(lines)
 
 
 def main():
@@ -109,10 +113,11 @@ def main():
                 img = np.array(sct.grab(monitor))
 
                 # Conver the image and show
-                img, line_count = process_img(img)
+                img, original_image, line_count = process_img(img)
                 line_count_list.append(line_count)
 
                 cv2.imshow("OpenCV/Numpy normal", img)
+                # cv2.imshow("OpenCV/Numpy normal", original_image)
 
                 fps_list.append(1 / (time.time() - last_time))
                 if time.time() - last_print > 2:

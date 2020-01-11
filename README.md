@@ -110,3 +110,9 @@ one line to detecting many lines as I would expect it to. Very short day, but ra
 
 Attempted to add the lane finding function into the program. Did not get very with it - unable to find any lines. Will
 want to look over program and update later
+
+## Day 8 - 1.5 hours
+
+Debugging lane finding. The many try and except loops were hiding errors since they would just print it out and pass it.
+Stepped through and fixed these. Also, the "lane" that it was finding was basically a horizontal line so it attempted to
+graph a horizontal starting at min and max y resulting in rediculous x values

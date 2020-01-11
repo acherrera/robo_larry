@@ -11,34 +11,33 @@ def draw_lanes(img, lines, color=[0, 255, 255], thickness=3):
     # if this fails, go with some default line
     try:
 
-        # finds the maximum y value for a lane marker 
-        # (since we cannot assume the horizon will always be at the same point.)
-
-        ys = []  
+        # Get minimum y value
+        ys = []
         for i in lines:
             for ii in i:
-                ys += [ii[1],ii[3]]
+                ys += [ii[1], ii[3]]
         min_y = min(ys)
-        max_y = 600
+        max_y = 768
         new_lines = []
         line_dict = {}
 
-        for idx,i in enumerate(lines):
+        for idx, i in enumerate(lines):
             for xyxy in i:
                 # These four lines:
                 # modified from http://stackoverflow.com/questions/21565994/method-to-return-the-equation-of-a-straight-line-given-two-points
                 # Used to calculate the definition of a line, given two sets of coords.
-                x_coords = (xyxy[0],xyxy[2])
-                y_coords = (xyxy[1],xyxy[3])
-                A = vstack([x_coords,ones(len(x_coords))]).T
+                x_coords = (xyxy[0], xyxy[2])
+                y_coords = (xyxy[1], xyxy[3])
+                A = vstack([x_coords, ones(len(x_coords))]).T
                 m, b = lstsq(A, y_coords)[0]
 
-                # Calculating our new, and improved, xs
-                x1 = (min_y-b) / m
-                x2 = (max_y-b) / m
+                if m > 0.1:
+                    # Calculating our new, and improved, xs
+                    x1 = (min_y-b) / m
+                    x2 = (max_y-b) / m
 
-                line_dict[idx] = [m,b,[int(x1), min_y, int(x2), max_y]]
-                new_lines.append([int(x1), min_y, int(x2), max_y])
+                    line_dict[idx] = [m, b, [int(x1), min_y, int(x2), max_y]]
+                    new_lines.append([int(x1), min_y, int(x2), max_y])
 
         final_lanes = {}
 
@@ -47,10 +46,10 @@ def draw_lanes(img, lines, color=[0, 255, 255], thickness=3):
             m = line_dict[idx][0]
             b = line_dict[idx][1]
             line = line_dict[idx][2]
-            
+
             if len(final_lanes) == 0:
-                final_lanes[m] = [ [m,b,line] ]
-                
+                final_lanes[m] = [[m, b, line]]
+
             else:
                 found_copy = False
 
@@ -59,18 +58,19 @@ def draw_lanes(img, lines, color=[0, 255, 255], thickness=3):
                     if not found_copy:
                         if abs(other_ms*1.2) > abs(m) > abs(other_ms*0.8):
                             if abs(final_lanes_copy[other_ms][0][1]*1.2) > abs(b) > abs(final_lanes_copy[other_ms][0][1]*0.8):
-                                final_lanes[other_ms].append([m,b,line])
+                                final_lanes[other_ms].append([m, b, line])
                                 found_copy = True
                                 break
                         else:
-                            final_lanes[m] = [ [m,b,line] ]
+                            final_lanes[m] = [[m, b, line]]
 
         line_counter = {}
 
         for lanes in final_lanes:
             line_counter[lanes] = len(final_lanes[lanes])
 
-        top_lanes = sorted(line_counter.items(), key=lambda item: item[1])[::-1][:2]
+        top_lanes = sorted(line_counter.items(),
+                           key=lambda item: item[1])[::-1][:2]
 
         lane1_id = top_lanes[0][0]
         lane2_id = top_lanes[1][0]
