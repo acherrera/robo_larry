@@ -116,3 +116,6 @@ want to look over program and update later
 Debugging lane finding. The many try and except loops were hiding errors since they would just print it out and pass it.
 Stepped through and fixed these. Also, the "lane" that it was finding was basically a horizontal line so it attempted to
 graph a horizontal starting at min and max y resulting in rediculous x values
+
+Tuning and tuning and more tuning to try and get that dang left lane to be found. Maybe be better / eaiser to just
+rewrite the land finding from scratch as I barely understand how it is currently working.

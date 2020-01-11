@@ -3,6 +3,7 @@ import logging
 import numpy as np
 import mss
 import cv2
+import matplotlib.pyplot as plt
 
 from larry.lane_finder.lane_finder import draw_lanes
 from threading import Thread
@@ -34,8 +35,10 @@ def draw_lines(img, lines):
 
 def process_img(original_image):
     processed_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
-    processed_img = cv2.equalizeHist(processed_img)
-    processed_img = cv2.Canny(processed_img, threshold1=300, threshold2=350)
+    # processed_img = cv2.equalizeHist(processed_img)
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+    cl1 = clahe.apply(processed_img)
+    processed_img = cv2.Canny(cl1, threshold1=200, threshold2=300)
 
     # Region of Interest Definitions
     y_max = 745
@@ -62,7 +65,7 @@ def process_img(original_image):
     #                          edges       rho   theta   thresh         # min length, max gap:
 
     processed_img = cv2.blur(processed_img,(2,2))
-    lines = cv2.HoughLinesP(processed_img, 1, np.pi / 180, 200, None, 0, 0)
+    lines = cv2.HoughLinesP(processed_img, 1, np.pi / 180, 300, None, 0, 0)
     line_count = draw_lines(processed_img, lines)
 
 
@@ -116,7 +119,10 @@ def main():
                 img, original_image, line_count = process_img(img)
                 line_count_list.append(line_count)
 
-                cv2.imshow("OpenCV/Numpy normal", img)
+                test_img_hstack = np.hstack((img, cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)))
+
+                cv2.imshow("American Truck Robo Simulator", test_img_hstack)
+                # cv2.imshow("OpenCV/Numpy normal", img)
                 # cv2.imshow("OpenCV/Numpy normal", original_image)
 
                 fps_list.append(1 / (time.time() - last_time))
