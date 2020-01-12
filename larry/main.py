@@ -11,34 +11,14 @@ from threading import Thread
 logger = logging.getLogger(__name__)
 
 
-def roi(img, vertices):
-    # blank mask:
-    mask = np.zeros_like(img)
-    # fill the mask
-    cv2.fillPoly(mask, vertices, 255)
-    # now only show the area that is the mask
-    masked = cv2.bitwise_and(img, mask)
-    return masked
-
-
-def draw_lines(img, lines):
-    try:
-        for line in lines:
-            coords = line[0]
-            cv2.line(
-                img, (coords[0], coords[1]), (coords[2], coords[3]), [255, 255, 255], 3
-            )
-        return len(lines)
-    except Exception as e:
-        return 0
-
-
-def process_img(original_image):
-    processed_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
-    # processed_img = cv2.equalizeHist(processed_img)
-    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-    cl1 = clahe.apply(processed_img)
-    processed_img = cv2.Canny(cl1, threshold1=200, threshold2=300)
+def roi(img):
+    """
+        Removes extra image data that we do not want to processing
+        Args:
+            img: Numpy array of grayscale image values
+        Returns:
+            numpy array of image values with extra data removed
+    """
 
     # Region of Interest Definitions
     y_max = 745
@@ -47,6 +27,8 @@ def process_img(original_image):
     mirror_y = 350
     mirror2_x = 824
     nav_y = 320
+
+    # Where we want to look
     vertices = np.array(
         [
             [10, y_max],
@@ -60,39 +42,67 @@ def process_img(original_image):
         ],
         np.int32,
     )
-    processed_img = roi(processed_img, [vertices])
-    # more info: http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_imgproc/py_houghlines/py_houghlines.html
-    #                          edges       rho   theta   thresh         # min length, max gap:
 
-    processed_img = cv2.blur(processed_img,(2,2))
+    vertices = [vertices]
+    # blank mask:
+    mask = np.zeros_like(img)
+    # fill the mask
+    cv2.fillPoly(mask, vertices, 255)
+    # now only show the area that is the mask
+    masked = cv2.bitwise_and(img, mask)
+    return masked
+
+
+def edge_detection(img):
+    """
+        Take the original_image, reduces to grayscale, increase contrast, runs canny edge detection
+    """
+
+    processed_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # processed_img = cv2.equalizeHist(processed_img)
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
+    cl1 = clahe.apply(processed_img)
+    processed_img = cv2.Canny(cl1, threshold1=200, threshold2=300)
+
+    return processed_img
+
+
+def find_lines(img):
+    """
+        Finds the lines in an image with edge detection already performed
+    """
+    processed_img = cv2.blur(img,(2,2))
     lines = cv2.HoughLinesP(processed_img, 1, np.pi / 180, 300, None, 0, 0)
-    line_count = draw_lines(processed_img, lines)
 
+    # Draw lines on image
+    try:
+        for line in lines:
+            coords = line[0]
+            cv2.line(
+                processed_img, (coords[0], coords[1]), (coords[2], coords[3]), [255, 255, 255], 3
+            )
+    except TypeError:
+        logger.info("No lines found")
+
+    return  processed_img, lines
+
+
+
+def process_img(original_image):
+
+    processed_img = edge_detection(original_image)
+
+    processed_img = roi(processed_img,)
+
+    processed_img, lines = find_lines(processed_img)
 
     try:
         l1, l2 = draw_lanes(original_image, lines)
-        logger.debug(f"Line are {l1} and {l2}")
+        logger.debug(f"Lines are {l1} and {l2}")
         cv2.line(original_image, (l1[0], l1[1]), (l1[2], l1[3]), [0, 255, 0], 30)
         cv2.line(original_image, (l2[0], l2[1]), (l2[2], l2[3]), [0, 255, 0], 30)
     except Exception as e:
         logger.error(f"Break 2 had error: {str(e)}")
-
-    try:
-        for coords in lines:
-            coords = coords[0]
-            try:
-                cv2.line(
-                    processed_img,
-                    (coords[0], coords[1]),
-                    (coords[2], coords[3]),
-                    [255, 0, 0],
-                    3,
-                )
-
-            except Exception as e:
-                logger.error(f"Error break 2: {str(e)}")
-    except Exception as e:
-        logger.error(f"Error break 3: {str(e)}")
 
     if lines is None:
         lines = list()

@@ -119,3 +119,9 @@ graph a horizontal starting at min and max y resulting in rediculous x values
 
 Tuning and tuning and more tuning to try and get that dang left lane to be found. Maybe be better / eaiser to just
 rewrite the land finding from scratch as I barely understand how it is currently working.
+
+
+## Day 9 - ?? hours
+
+Refactored code and found a duplicate chunk of code that was likely causing some FPS issues. Next up is updated the lane
+finder so that it actually works. Line finding appears to be adequate
