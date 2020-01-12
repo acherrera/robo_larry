@@ -52,27 +52,26 @@ def roi(img):
     masked = cv2.bitwise_and(img, mask)
     return masked
 
-
 def edge_detection(img):
     """
         Take the original_image, reduces to grayscale, increase contrast, runs canny edge detection
     """
 
     processed_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    # processed_img = cv2.equalizeHist(processed_img)
+    # cl1 = cv2.equalizeHist(processed_img)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
     cl1 = clahe.apply(processed_img)
-    processed_img = cv2.Canny(cl1, threshold1=200, threshold2=300)
+    cl1 = cv2.blur(cl1,(5,5))
+    processed_img = cv2.Canny(cl1, threshold1=100, threshold2=200)
 
     return processed_img
 
-
-def find_lines(img):
+def find_lines(processed_img):
     """
         Finds the lines in an image with edge detection already performed
     """
-    processed_img = cv2.blur(img,(2,2))
-    lines = cv2.HoughLinesP(processed_img, 1, np.pi / 180, 300, None, 0, 0)
+    processed_img = cv2.blur(processed_img,(5,5))
+    lines = cv2.HoughLinesP(processed_img, 1, np.pi / 180, 200, None, 0, 0)
 
     # Draw lines on image
     try:
@@ -86,10 +85,7 @@ def find_lines(img):
 
     return  processed_img, lines
 
-
-
 def process_img(original_image):
-
     processed_img = edge_detection(original_image)
 
     processed_img = roi(processed_img,)
@@ -108,7 +104,6 @@ def process_img(original_image):
         lines = list()
 
     return processed_img, original_image, len(lines)
-
 
 def main():
     while True:
@@ -129,7 +124,9 @@ def main():
                 img, original_image, line_count = process_img(img)
                 line_count_list.append(line_count)
 
-                test_img_hstack = np.hstack((img, cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)))
+                test_img_hstack = np.hstack((
+                    cv2.cvtColor(img, cv2.COLOR_GRAY2BGRA),
+                    original_image))
 
                 cv2.imshow("American Truck Robo Simulator", test_img_hstack)
                 # cv2.imshow("OpenCV/Numpy normal", img)
@@ -147,7 +144,6 @@ def main():
                 if cv2.waitKey(25) & 0xFF == ord("q"):
                     cv2.destroyAllWindows()
                     break
-
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)

@@ -31,7 +31,7 @@ def draw_lanes(img, lines, color=[0, 255, 255], thickness=3):
                 A = vstack([x_coords, ones(len(x_coords))]).T
                 m, b = lstsq(A, y_coords)[0]
 
-                if m > 0.1:
+                if abs(m) > 0.1:
                     # Calculating our new, and improved, xs
                     x1 = (min_y-b) / m
                     x2 = (max_y-b) / m
