@@ -6,24 +6,38 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def press_key(keyval=None):
+    """
+        Presses the given key and releases the other keys in 'wasd'
+    """
 
-def press_key(keyval, sec=0.5):
-    """
-        Press keys in "key_list" for a given number of seconds or once if no seconds given
-        Args:
-            key_list: list of keys to pressed at once
-            sec: how many seconds to press keys for - Set to None for a single press
-    """
-    if sec:
-        logger.debug('{key_list) for {sec} seconds')
-        if keyval in ['w', 's']:
-            pyautogui.press(keyval) # Shift forward if not already
+    stop_press = [ 'a', 'd']
+    if keyval:
+        stop_press.remove(keyval)
         pyautogui.keyDown(keyval)
 
-        time.sleep(sec)
+    for i in stop_press:
+        pyautogui.keyUp(i)
+
+    if keyval:
         pyautogui.keyUp(keyval)
-    else:
-        pyautogui.press(keyval)
+
+
+
+def cont_straight():
+    press_key('w')
+
+def cont_left():
+    press_key('a')
+
+def cont_right():
+    press_key('d')
+
+def cont_slow():
+    press_key('s')
+
+def stop_all():
+    press_key()
 
 def control_test():
     """
@@ -38,10 +52,15 @@ def control_test():
     RIGHT = 'd'
     STOP = 's'
 
-    press_key(FORWARD, 0.5)
-    press_key(LEFT, 0.5)
-    press_key(RIGHT, 0.5)
-    press_key(STOP, 0.5)
+    press_key(FORWARD)
+    time.sleep(0.5)
+    press_key(LEFT)
+    time.sleep(0.5)
+    press_key(RIGHT)
+    time.sleep(0.5)
+    press_key(STOP)
+    time.sleep(0.5)
+    press_key()
 
 
 

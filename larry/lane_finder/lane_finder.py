@@ -90,7 +90,7 @@ def draw_lanes(img, lines, color=[0, 255, 255], thickness=3):
         l1_x1, l1_y1, l1_x2, l1_y2 = average_lane(final_lanes[lane1_id])
         l2_x1, l2_y1, l2_x2, l2_y2 = average_lane(final_lanes[lane2_id])
 
-        return [l1_x1, l1_y1, l1_x2, l1_y2], [l2_x1, l2_y1, l2_x2, l2_y2]
+        return [l1_x1, l1_y1, l1_x2, l1_y2], [l2_x1, l2_y1, l2_x2, l2_y2], lane1_id, lane2_id
 
     except Exception as e:
         logger.error(str(e))

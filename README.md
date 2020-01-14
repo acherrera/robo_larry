@@ -121,7 +121,7 @@ Tuning and tuning and more tuning to try and get that dang left lane to be found
 rewrite the land finding from scratch as I barely understand how it is currently working.
 
 
-## Day 9 - 3 hours
+## Day 9 - 4 hours
 
 Refactored code and found a duplicate chunk of code that was likely causing some FPS issues. Next up is updated the lane
 finder so that it actually works. Line finding appears to be adequate. 
@@ -130,3 +130,7 @@ After some more tuning lane finding is working better and driving in grass doesn
 due to less line being detected. The key is just more blurring I guess. 
 
 Looked over the control code and updated.
+
+First attempts at letting the computer drive itself. Not bad.... Not great either. Sometimes corrected too much,
+sometimes not enough. Still having framerate issues, need to try and reduce the image size before processing - that
+should help considerably
