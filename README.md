@@ -78,6 +78,9 @@ detection this afternoon if possible.
 Spent a good amount of time diagnosing a new gaming headset that should hopefully increase the audio quality. Turns out
 I didn't plug it in correctly.... ugh. Did second video on controls and uploaded first video
 
+
+Video from this day: https://youtu.be/N1dOGgtShr4
+
 ## Day 5 - 1.5 hour
 
 Trying to get the frames to process reasonably fast. Trying to fix lines result is 1 frames a second instead of 100+
@@ -134,3 +137,17 @@ Looked over the control code and updated.
 First attempts at letting the computer drive itself. Not bad.... Not great either. Sometimes corrected too much,
 sometimes not enough. Still having framerate issues, need to try and reduce the image size before processing - that
 should help considerably
+
+
+## Day 10 - 1.2 hour
+
+
+Reduced image size by 50% before processing resulting in much higher frames per second. Afterwards, fiddled with the
+edge detection and blur parameters and ended up with a very good result. Tuned the parameters on the controls and
+finally settles on one "turn" every 1.5 seconds (basically). Turn decay is not based on time, not frame rate which
+appears to have stabilized the turning significant.
+
+Took a chance and just added logic to accelerate when the lines are not the same slope (IE when the vehicle is in the
+middle of the lane and it works swimmingly
+
+Results after this day: https://youtu.be/98NeVOI6AkU

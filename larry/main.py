@@ -22,12 +22,19 @@ def roi(img):
     """
 
     # Region of Interest Definitions
+
     y_max = 745
     x_max = 1024
-    mirror1_x = 200
-    mirror_y = 350
-    mirror2_x = 824
-    nav_y = 320
+
+    width = int(img.shape[1])
+    height = int(img.shape[0])
+
+    y_max = 100*height
+    x_max = 100*width
+    mirror1_x = 0.268*width
+    mirror_y = 0.5*height
+    mirror2_x = 0.8047*width
+    nav_y = 0.43*height
 
     # Where we want to look
     vertices = np.array(
@@ -61,8 +68,8 @@ def edge_detection(img):
     # cl1 = cv2.equalizeHist(processed_img)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
     cl1 = clahe.apply(processed_img)
-    cal1 = cv2.blur(cl1,(10,10))
-    processed_img = cv2.Canny(cl1, threshold1=100, threshold2=200)
+    cl1 = cv2.blur(cl1,(4,4))
+    processed_img = cv2.Canny(cl1, threshold1=50, threshold2=200)
 
     return processed_img
 
@@ -70,8 +77,7 @@ def find_lines(processed_img):
     """
         Finds the lines in an image with edge detection already performed
     """
-    processed_img = cv2.blur(processed_img,(5,5))
-    lines = cv2.HoughLinesP(processed_img, 1, np.pi / 180, 200, None, 0, 0)
+    lines = cv2.HoughLinesP(processed_img, 1, np.pi / 180, 100)
 
     # Draw lines on image
     try:
@@ -86,6 +92,7 @@ def find_lines(processed_img):
     return  processed_img, lines
 
 def process_img(original_image):
+
     processed_img = edge_detection(original_image)
 
     processed_img = roi(processed_img,)
@@ -108,14 +115,29 @@ def process_img(original_image):
 
     return processed_img, original_image, len(lines), m1, m2
 
+
+def honey_i_shrunk_the_image(original_image, scale_percent):
+    """
+        Resize an image the a perctage of the original
+    """
+
+    width = int(original_image.shape[1] * scale_percent / 100)
+    height = int(original_image.shape[0] * scale_percent / 100)
+    dim = (width, height)
+    # resize image
+    resized = cv2.resize(original_image, dim, interpolation = cv2.INTER_AREA)
+    return resized
+
+
 def main():
 
     turnval = 0
     turnval_list = list()
+    timelast = time.time()
     while True:
         with mss.mss() as sct:
             # Part of the screen to capture
-            monitor = {"top": 40, "left": 0, "width": 1024, "height": 768}
+            monitor = {"top": 40, "left": 0, "width": 1024, "height": 748}
 
             fps_list = []
             line_count_list = []
@@ -125,6 +147,9 @@ def main():
 
                 # Get raw pixels from the screen, save it to a Numpy array
                 img = np.array(sct.grab(monitor))
+
+                per_reduce = 50
+                img = honey_i_shrunk_the_image(img, 50)
 
                 # Conver the image and show
                 img, original_image, line_count, m1, m2= process_img(img)
@@ -139,16 +164,16 @@ def main():
                 # cv2.imshow("OpenCV/Numpy normal", original_image)
 
                 # left is negative, right is positive
-                max_turn = 3
+                max_turn = 1
+                turn_rate = 1.5
                 min_turn = 0-max_turn
 
-
                 # Account for wheel returning to center on their own while driving
-                do_controls = False
+                do_controls = True
 
                 if do_controls:
 
-                    decay_rate = 0.2
+                    decay_rate = time.time() - timelast
                     if turnval < 0:
                         turnval += decay_rate
                     if turnval > 0:
@@ -157,14 +182,18 @@ def main():
                     if m1<0 and m2<0:
                         if turnval < max_turn:
                             cont_right()
-                            turnval += 1
+                            turnval += turn_rate
 
                     elif m1>0 and m2>0:
                         if turnval > min_turn:
                             cont_left()
-                            turnval -= 1
+                            turnval -= turn_rate
+                    elif (m1 > 0 and m2 <0) or (m1 < 0 and m2 > 0):
+                        cont_straight()
+
                     else:
                         pass
+                    timelast = time.time()
 
 
                 turnval_list.append(turnval)

@@ -11,7 +11,7 @@ def press_key(keyval=None):
         Presses the given key and releases the other keys in 'wasd'
     """
 
-    stop_press = [ 'a', 'd']
+    stop_press = ['w', 'a', 'd']
     if keyval:
         stop_press.remove(keyval)
         pyautogui.keyDown(keyval)
