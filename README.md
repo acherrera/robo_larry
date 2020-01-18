@@ -151,3 +151,19 @@ Took a chance and just added logic to accelerate when the lines are not the same
 middle of the lane and it works swimmingly
 
 Results after this day: https://youtu.be/98NeVOI6AkU
+
+## Day 12 - 1.5 hours
+
+Mainly just messed around and showed off what the program could do. Afterwards went hunting for a way to save the
+keypress input. Found a way to do it, but the program seems very limited. Basically it can get key presses but it runs
+in a class so I need to hack that class to make it work with the image processing
+
+## Day 13 - 2 hours
+
+Attempting to use socket communication to send the required data to a local server that will process and save the data
+as needed. The socket communication is easy enough, but once again there is a time issue. The key logger runs based on
+events, whiche mean syncing it with the images will be a challenge even if the socket communication worked perfectly. 
+
+Okay, think I figured out to sync it all together. This should be interesting. First time using sockets programming and
+I kind of like it. I can see how it would be super useful for multiprocessing images. Hmm.... this might help immensely
+with the framerate. Get around the GIL (Global Interpreter Lock) by run running multiple programs. 
