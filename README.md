@@ -158,7 +158,7 @@ Mainly just messed around and showed off what the program could do. Afterwards w
 keypress input. Found a way to do it, but the program seems very limited. Basically it can get key presses but it runs
 in a class so I need to hack that class to make it work with the image processing
 
-## Day 13 - 2 hours
+## Day 13 - 3 hours
 
 Attempting to use socket communication to send the required data to a local server that will process and save the data
 as needed. The socket communication is easy enough, but once again there is a time issue. The key logger runs based on
@@ -167,3 +167,6 @@ events, whiche mean syncing it with the images will be a challenge even if the s
 Okay, think I figured out to sync it all together. This should be interesting. First time using sockets programming and
 I kind of like it. I can see how it would be super useful for multiprocessing images. Hmm.... this might help immensely
 with the framerate. Get around the GIL (Global Interpreter Lock) by run running multiple programs. 
+
+Socket communication suffered from the same class based issues. Ended up just writing the keys to a file and will read
+them in later with some logic for turning that into an array. It's not pretty but it should work well enough

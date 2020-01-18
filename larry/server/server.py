@@ -3,10 +3,13 @@ import socketserver
 import pickle
 import numpy as np
 
+# Boy do I love classes - just hacking this together
+
 class MyTCPServer(socketserver.TCPServer):
     """
         Have to do this in order to resuse the existing port. Just overriding the default class
     """
+
     def server_bind(self):
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.socket.bind(self.server_address)
@@ -21,6 +24,7 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
     """
 
     def handle(self):
+
         # self.request is the TCP socket connected to the client
         self.data = self.request.recv(1024).strip()
         self.data = pickle.loads(self.data)
@@ -31,6 +35,14 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
         self.request.sendall(b'Got it')
 
         # If received len == 1, add to key_input_list
+        if len(self.data) == 1:
+            self.key_input_list.append(self.data)
+            print(self.key_input_list)
+
+            if len(self.key_input_list) > 10:
+                self.key_input_list = list()
+                print("Resetting input key list")
+
         # If received len > 10, do some math to get which key to use for input
         # Append [input_img, controls] to master array
         # reset key_input_list

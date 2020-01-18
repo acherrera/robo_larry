@@ -1,31 +1,28 @@
 """
     Script showing how to get keypresses for every key pressed
 """
-import pyxhook
-import socket
-import sys
-import time
-import pickle
-import numpy as np
+from pynput.keyboard import Key, Listener
+
+def on_press(key):
+    key = str(key)
+    if 'Key' not in key:
+        key = key.replace("'", '')
+    with open('/tmp/pyplays-keypress.txt', 'a') as f:
+        f.write(key + '\n')
+
+def getkeys():
+    with Listener(on_press=on_press) as listener:
+        print(listener.join())
 
 
-HOST, PORT = "localhost", 9999
+def key_check():
+    # TODO
+    pass
 
-def OnKeyPress(event):
-    data = event.Key
-    data = pickle.dumps(data)
-    # Create a socket (SOCK_STREAM means a TCP socket)
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        # Connect to server and send data
-        sock.connect((HOST, PORT))
-        sock.sendall(data)
-
-        # Receive data from the server and shut down
-        received = str(sock.recv(1024), "utf-8")
-        print("Sent: {}".format(data))
-
-
-hm = pyxhook.HookManager()
-hm.KeyDown = OnKeyPress
-hm.HookKeyboard()
-hm.start()
+if __name__ == "__main__":
+    import os
+    file_path = '/tmp/pyplays-keypress.txt'
+    if os.path.exists(file_path):
+        os.remove (file_path)
+    while True:
+        getkeys()
