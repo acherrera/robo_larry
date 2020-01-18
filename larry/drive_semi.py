@@ -1,3 +1,9 @@
+"""
+This was one of the first attempts to drive the semi automonously. Much of this code will be recycled and used in the
+training program
+"""
+
+
 import time
 import logging
 import numpy as np
@@ -7,27 +13,23 @@ import matplotlib.pyplot as plt
 
 from larry.lane_finder.lane_finder import draw_lanes
 from larry.controls.controls import cont_straight, cont_left, cont_right, cont_slow, stop_all
+from larry.processing.processing import roi, edge_detection, find_lines, perc_img_reduce
 from threading import Thread
 
 logger = logging.getLogger(__name__)
 
 
-def roi(img):
-    """
-        Removes extra image data that we do not want to processing
-        Args:
-            img: Numpy array of grayscale image values
-        Returns:
-            numpy array of image values with extra data removed
-    """
+def process_img(original_image):
+
+    processed_img = edge_detection(original_image)
 
     # Region of Interest Definitions
 
     y_max = 745
     x_max = 1024
 
-    width = int(img.shape[1])
-    height = int(img.shape[0])
+    width = int(processed_img.shape[1])
+    height = int(processed_img.shape[0])
 
     y_max = 100*height
     x_max = 100*width
@@ -50,52 +52,8 @@ def roi(img):
         np.int32,
     )
 
-    vertices = [vertices]
-    # blank mask:
-    mask = np.zeros_like(img)
-    # fill the mask
-    cv2.fillPoly(mask, vertices, 255)
-    # now only show the area that is the mask
-    masked = cv2.bitwise_and(img, mask)
-    return masked
 
-def edge_detection(img):
-    """
-        Take the original_image, reduces to grayscale, increase contrast, runs canny edge detection
-    """
-
-    processed_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    # cl1 = cv2.equalizeHist(processed_img)
-    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-    cl1 = clahe.apply(processed_img)
-    cl1 = cv2.blur(cl1,(4,4))
-    processed_img = cv2.Canny(cl1, threshold1=50, threshold2=200)
-
-    return processed_img
-
-def find_lines(processed_img):
-    """
-        Finds the lines in an image with edge detection already performed
-    """
-    lines = cv2.HoughLinesP(processed_img, 1, np.pi / 180, 100)
-
-    # Draw lines on image
-    try:
-        for line in lines:
-            coords = line[0]
-            cv2.line(
-                processed_img, (coords[0], coords[1]), (coords[2], coords[3]), [255, 255, 255], 3
-            )
-    except TypeError:
-        pass
-
-    return  processed_img, lines
-
-def process_img(original_image):
-
-    processed_img = edge_detection(original_image)
-
-    processed_img = roi(processed_img,)
+    processed_img = roi(processed_img, vertices)
 
     processed_img, lines = find_lines(processed_img)
 
@@ -115,18 +73,6 @@ def process_img(original_image):
 
     return processed_img, original_image, len(lines), m1, m2
 
-
-def honey_i_shrunk_the_image(original_image, scale_percent):
-    """
-        Resize an image the a perctage of the original
-    """
-
-    width = int(original_image.shape[1] * scale_percent / 100)
-    height = int(original_image.shape[0] * scale_percent / 100)
-    dim = (width, height)
-    # resize image
-    resized = cv2.resize(original_image, dim, interpolation = cv2.INTER_AREA)
-    return resized
 
 
 def main():
@@ -149,7 +95,7 @@ def main():
                 img = np.array(sct.grab(monitor))
 
                 per_reduce = 50
-                img = honey_i_shrunk_the_image(img, 50)
+                img = perc_img_reduce(img, 50)
 
                 # Conver the image and show
                 img, original_image, line_count, m1, m2= process_img(img)
