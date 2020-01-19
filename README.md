@@ -170,3 +170,9 @@ with the framerate. Get around the GIL (Global Interpreter Lock) by run running 
 
 Socket communication suffered from the same class based issues. Ended up just writing the keys to a file and will read
 them in later with some logic for turning that into an array. It's not pretty but it should work well enough
+
+## Day 14 - 4 hours
+
+Breakthrough finally. Got the key logging working and translating this into a control array. Took WAY, WAY longer than I
+would have liked it to. But it appears to be working now. Sentdex didn't put the code to view the data in the tutuorial,
+but it was in the video and is extremely useful.

@@ -180,3 +180,4 @@ isd-history.csv
 tags
 .undodir/
 .vim/
+training_data/*
