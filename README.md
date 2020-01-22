@@ -178,3 +178,21 @@ would have liked it to. But it appears to be working now. Sentdex didn't put the
 but it was in the video and is extremely useful.
 
 Got some training data and am ready to move on to actually training the model.
+
+## Day 15 - 2 hours
+
+Fighting with CUDA installation. Looking towards next steps
+
+## Day 16 - 2 hours
+
+CUDA installed almost immediately from deb. So that's nice. Tensorflow and TFlearn install went pretty smooth as well.
+Trained first model and attempted to run. Did not go well. Tried to open ATS and discovered CUDA installed from deb
+makes steam and other games not work. So bad to installing from the .run file. This time with (maybe) better
+instructions!
+
+https://github.com/ValveSoftware/steam-for-linux/issues/5778
+
+Hey, finally got CUDA installed. For real this time. At least, ATS works now. Ran the initial model and it was complete
+and total trash. Will got more training data and train it with that. I had gotten 100k images previously but this was
+narrowed down to about 1600*4 once I had balanced the data a little more. Next time I'm going to shoow for 100k images
+to train with. That is, images after balancing

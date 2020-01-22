@@ -3,3 +3,6 @@ pillow
 opencv-python
 pyautogui
 mss
+pandas
+tflearn
+tensorflow==1.1.0

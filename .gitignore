@@ -181,3 +181,6 @@ tags
 .undodir/
 .vim/
 training_data/*
+
+ats*
+models
