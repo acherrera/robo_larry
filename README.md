@@ -196,3 +196,12 @@ Hey, finally got CUDA installed. For real this time. At least, ATS works now. Ra
 and total trash. Will got more training data and train it with that. I had gotten 100k images previously but this was
 narrowed down to about 1600*4 once I had balanced the data a little more. Next time I'm going to shoow for 100k images
 to train with. That is, images after balancing
+
+## Day 17 - 2 hours
+
+Okay, I put a few more days into the project than this but I forgot to record it. Trained up model number two and it was
+also garbage. Looking at the number it seemed like the inputs were far too few for how much time I was putting into it.
+Turns out, my input capture was only capture between 1/2 and 1/30 of the data I was actually making. So... back to the
+drawing board for the input capture. Most likely going to use a bash script as the root level so I can get raw input.
+
+

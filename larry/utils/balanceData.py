@@ -1,3 +1,4 @@
+import sys
 import numpy as np
 import pandas as pd
 from collections import Counter
@@ -5,6 +6,9 @@ from random import shuffle
 
 
 def balance_data(filepath, outpath):
+
+    print('Loading data...')
+
     train_data = np.load(filepath, allow_pickle=True)
     df = pd.DataFrame(train_data)
 
@@ -15,6 +19,7 @@ def balance_data(filepath, outpath):
     rights = []
     forwards = []
     backs = []
+    empties = []
 
     shuffle(train_data)
 
@@ -31,18 +36,31 @@ def balance_data(filepath, outpath):
         elif choice == [0,0,0,1]:
             rights.append([img,choice])
         else:
+            empties.append([img, choice])
             pass
 
     print(f'Forwards: {len(forwards)}')
     print(f'Backwards: {len(backs)}')
     print(f'Left: {len(lefts)}')
     print(f'Right: {len(rights)}')
+    print(f'Empty: {len(empties)}')
 
     forwards = forwards[:len(lefts)][:len(rights)][:len(backs)]
     lefts = lefts[:len(forwards)]
     rights = rights[:len(forwards)]
     backs = backs[:len(forwards)]
+    empties = empties[:len(forwards)]
 
+    decision = input("Should we save the data? (Not saving empties) [y/n]")
+    print(f'You chose {decision}')
+
+    if decision.upper() != 'Y':
+        print("Exiting...")
+        sys.exit(1)
+
+    print(f'Saving data to {outpath}')
+
+    # To we want to add empties?
     final_data = forwards + lefts + rights + backs
     shuffle(final_data)
 
@@ -50,7 +68,6 @@ def balance_data(filepath, outpath):
 
 
 if __name__ == "__main__":
-    import sys
 
     if len(sys.argv) < 3:
         print("Arg1: input data")

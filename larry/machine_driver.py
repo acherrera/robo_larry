@@ -14,7 +14,7 @@ WIDTH = 80
 HEIGHT = 60
 LR = 1e-3
 EPOCHS = 8
-MODEL_NAME = './ats-car-{}-{}-{}-epochs.model'.format(LR, 'alexnetv2',EPOCHS)
+MODEL_NAME = './ats-{}-{}-{}-epochs.model'.format(LR, 'alexnetv2',EPOCHS)
 
 model = alexnet(WIDTH, HEIGHT, LR)
 model.load(MODEL_NAME)

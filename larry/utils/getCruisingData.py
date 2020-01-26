@@ -57,6 +57,7 @@ def main():
 
             keys = key_check()
             output = keys_to_output(keys)
+            print(output)
             training_data.append([screen, output])
 
             if cv2.waitKey(25) & 0xFF == ord("q"):
@@ -70,12 +71,13 @@ def main():
                 fps_list = []
 
             target_fps = 60
-            while (time.time() - last_frame) < 1/target_fps:
-                pass
+            # while (time.time() - last_frame) < 1/target_fps:
+            #     pass
 
             if len(training_data) % 500 == 0:
                 print(len(training_data))
-                np.save(file_name, training_data)
+                print("NOT ACTUALLY SAVING!!")
+                # np.save(file_name, training_data)
 
 
 if __name__ == "__main__":
