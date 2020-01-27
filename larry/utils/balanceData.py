@@ -15,34 +15,51 @@ def balance_data(filepath, outpath):
     print(df.head())
     print(Counter(df[1].apply(str)))
 
+    forwards = []
+    front_left = []
+    front_right = []
     lefts = []
     rights = []
-    forwards = []
     backs = []
+    back_left = []
+    back_right = []
     empties = []
 
     shuffle(train_data)
 
     for data in train_data:
         img = data[0]
-        choice = data[1]
+        choice = list(data[1])
 
         if choice == [1,0,0,0]:
             forwards.append([img,choice])
         elif choice == [0,1,0,0]:
             lefts.append([img,choice])
-        elif choice == [0,0,1,0]:
-            backs.append([img,choice])
         elif choice == [0,0,0,1]:
             rights.append([img,choice])
-        else:
+        elif choice == [1,1,0,0]:
+            front_left.append([img,choice])
+        elif choice == [1,0,0,1]:
+            front_right.append([img,choice])
+        elif choice == [0,0,0,1]:
+            rights.append([img,choice])
+        elif choice == [0,0,1,0]:
+            backs.append([img,choice])
+        elif choice == [0,1,1,0]:
+            back_left.append([img,choice])
+        elif choice == [0,0,1,1]:
+            back_right.append([img,choice])
+        elif choice == [0,0,0,0]:
             empties.append([img, choice])
-            pass
 
     print(f'Forwards: {len(forwards)}')
-    print(f'Backwards: {len(backs)}')
+    print(f'Front Left: {len(front_left)}')
+    print(f'Front Right: {len(front_right)}')
     print(f'Left: {len(lefts)}')
     print(f'Right: {len(rights)}')
+    print(f'Backwards: {len(backs)}')
+    print(f'Back Left: {len(back_left)}')
+    print(f'back_right: {len(back_right)}')
     print(f'Empty: {len(empties)}')
 
     forwards = forwards[:len(lefts)][:len(rights)][:len(backs)]

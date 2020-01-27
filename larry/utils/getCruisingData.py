@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, '/home/tony/Repos/robo_larry') # Oh man, we're getting hacky now
 import numpy as np
 import mss
 import cv2
@@ -6,7 +8,7 @@ import threading
 import logging
 import os
 from datetime import datetime
-from larry.getkeys.getkeys import key_check, keys_to_output, getKeys
+from larry.getkeys.getkeys import key_check, keys_to_output
 
 logger = logging.getLogger(__name__)
 
@@ -27,9 +29,10 @@ def initialize_data(file_name):
 
 def main():
 
-    th = threading.Thread(target=getKeys)
-    th.start()
+    os.popen('sudo  python3 ./larry/getkeys/getkeys.py')
 
+    print('Sleeping ten seconds to enter password if needed')
+    time.sleep(10)
     now = datetime.now()
     prefix = now.strftime("%Y-%m-%d-%H%M%S")
     file_name = f'./training_data/{prefix}-training_data.npy'
@@ -55,9 +58,8 @@ def main():
             # resize to something a bit more acceptable for a CNN
             screen = cv2.resize(screen, (80, 60))
 
-            keys = key_check()
-            output = keys_to_output(keys)
-            print(output)
+            output = np.array(key_check())
+            # print(output)
             training_data.append([screen, output])
 
             if cv2.waitKey(25) & 0xFF == ord("q"):
@@ -76,9 +78,11 @@ def main():
 
             if len(training_data) % 500 == 0:
                 print(len(training_data))
-                print("NOT ACTUALLY SAVING!!")
-                # np.save(file_name, training_data)
+                # print("NOT ACTUALLY SAVING!!")
+                np.save(file_name, training_data)
 
 
 if __name__ == "__main__":
+
+    os.popen('sudo python3 ./larry/getkeys/getkeys.py')
     main()

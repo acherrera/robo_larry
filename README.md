@@ -197,11 +197,25 @@ and total trash. Will got more training data and train it with that. I had gotte
 narrowed down to about 1600*4 once I had balanced the data a little more. Next time I'm going to shoow for 100k images
 to train with. That is, images after balancing
 
-## Day 17 - 2 hours
+## Day 17 - 4 hours
 
 Okay, I put a few more days into the project than this but I forgot to record it. Trained up model number two and it was
 also garbage. Looking at the number it seemed like the inputs were far too few for how much time I was putting into it.
 Turns out, my input capture was only capture between 1/2 and 1/30 of the data I was actually making. So... back to the
 drawing board for the input capture. Most likely going to use a bash script as the root level so I can get raw input.
 
+Wow, somehow managed to get the contro inputs working in one day. Used a slightly different method and it requires sudo
+permissions, but it appears to work MUCH better. After one sessions the number of value looks like this: Previously I
+have nearly 129k empty valies with about 16k forward values which is... wrong. Very wrong. I also broke these up into
+combined commands instead of only 'forward', 'left', 'right', 'backwards'. Now we can got forward AND right. Wow, such
+advanced driving
 
+    Forwards: 28057
+    Front Left: 2575
+    Front Right: 1873
+    Left: 2246
+    Right: 1334
+    Backwards: 1410
+    Back Left: 189
+    back_right: 187
+    Empty: 9129
