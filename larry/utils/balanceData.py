@@ -20,10 +20,10 @@ def balance_data(filepath, outpath):
     front_right = []
     lefts = []
     rights = []
-    backs = []
+    back = []
     back_left = []
     back_right = []
-    empties = []
+    empty = []
 
     shuffle(train_data)
 
@@ -44,31 +44,53 @@ def balance_data(filepath, outpath):
         elif choice == [0,0,0,1]:
             rights.append([img,choice])
         elif choice == [0,0,1,0]:
-            backs.append([img,choice])
+            back.append([img,choice])
         elif choice == [0,1,1,0]:
             back_left.append([img,choice])
         elif choice == [0,0,1,1]:
             back_right.append([img,choice])
         elif choice == [0,0,0,0]:
-            empties.append([img, choice])
+            empty.append([img, choice])
+
 
     print(f'Forwards: {len(forwards)}')
     print(f'Front Left: {len(front_left)}')
     print(f'Front Right: {len(front_right)}')
     print(f'Left: {len(lefts)}')
     print(f'Right: {len(rights)}')
-    print(f'Backwards: {len(backs)}')
+    print(f'Backwards: {len(back)}')
     print(f'Back Left: {len(back_left)}')
-    print(f'back_right: {len(back_right)}')
-    print(f'Empty: {len(empties)}')
+    print(f'back Right: {len(back_right)}')
+    print(f'Empty: {len(empty)}')
 
-    forwards = forwards[:len(lefts)][:len(rights)][:len(backs)]
+
+    # What data do you want to keep?
+    master_list = [
+            forwards,
+            lefts,
+            rights,
+            front_left,
+            front_right,
+            back,
+            # back_left,
+            # back_right,
+            empty,
+            ]
+
+    lengths = [len(i) for i in master_list]
+    min_len = min(lengths)
+    total = sum(lengths)
+
+    print(f'Minimum length: {min_len}')
+    print(f'Total Values: {total}')
+
+    forwards = forwards[:len(lefts)][:len(rights)][:len(back)]
     lefts = lefts[:len(forwards)]
     rights = rights[:len(forwards)]
-    backs = backs[:len(forwards)]
-    empties = empties[:len(forwards)]
+    back = back[:len(forwards)]
+    empty = empty[:len(forwards)]
 
-    decision = input("Should we save the data? (Not saving empties) [y/n]")
+    decision = input("Should we save the data? (Not saving empty) [y/n]")
     print(f'You chose {decision}')
 
     if decision.upper() != 'Y':
@@ -77,8 +99,10 @@ def balance_data(filepath, outpath):
 
     print(f'Saving data to {outpath}')
 
-    # To we want to add empties?
-    final_data = forwards + lefts + rights + backs
+    # To we want to add empty?
+    final_data = list()
+    for i in master_list:
+        final_data += i
     shuffle(final_data)
 
     np.save(outpath, final_data)

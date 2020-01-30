@@ -1,7 +1,7 @@
 import pyautogui
 import time
-
 import logging
+from itertools import compress
 
 logger = logging.getLogger(__name__)
 
@@ -23,6 +23,25 @@ def press_key(keyval=None):
         pyautogui.keyUp(keyval)
 
 
+def array_press(key_array: dict):
+    """
+        Presses the keys based on the input
+        [0, 0, 0, 0] & ['w', 'a', 's', 'd'] = all keys released
+        [1, 0, 0, 1] & ['w', 'a', 's', 'd'] = 'w', 'd' pressed, others released
+
+    """
+    base_array = ['w', 'a' , 's', 'd']
+    to_press = list(compress(base_array, key_array))
+
+    for key in to_press:
+        pyautogui.keyDown(key)
+        base_array.remove(key)
+
+    # print(f'press: {to_press} \t\t release: {base_array}')
+
+    for key in base_array:
+        pyautogui.keyUp(key)
+
 
 def cont_straight():
     press_key('w')
@@ -41,27 +60,14 @@ def stop_all():
 
 def control_test():
     """
-        Give countdown and run the test
+        Run test
     """
-    for i in list(range(4))[::-1]:
-        print(i+1)
-        time.sleep(1)
 
-    FORWARD = 'w'
-    LEFT = 'a'
-    RIGHT = 'd'
-    STOP = 's'
-
-    press_key(FORWARD)
-    time.sleep(0.5)
-    press_key(LEFT)
-    time.sleep(0.5)
-    press_key(RIGHT)
-    time.sleep(0.5)
-    press_key(STOP)
-    time.sleep(0.5)
-    press_key()
-
+    array_press([0,0,0,0])
+    array_press([1,0,0,0])
+    array_press([1,1,0,0])
+    array_press([1,0,0,1])
+    array_press([0,0,0,0])
 
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ import logging
 import threading
 import mss
 from larry.getkeys.getkeys import key_check, getKeys
-from larry.controls.controls import cont_right, cont_left, cont_straight, cont_slow, stop_all
+from larry.controls.controls import array_press
 from larry.utils.alexnet import alexnet
 
 logger = logging.getLogger(__name__)
@@ -44,25 +44,11 @@ def main():
                 screen = np.array(sct.grab(monitor))
                 screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
                 screen = cv2.resize(screen, (80,60))
-                cv2.imshow('',screen)
+                # cv2.imshow('',screen)
                 moves = list(np.around(model.predict([screen.reshape(80,60,1)])[0]))
                 print(moves)
 
-                stop_all()
-
-                if moves == [1,0,0,0]:
-                    cont_straight()
-                elif moves == [0,1,0,0]:
-                    cont_straight()
-                    cont_left()
-                elif moves == [0,0,1,0]:
-                    cont_slow()
-                elif moves == [0,0,0,1]:
-                    cont_straight()
-                    cont_right()
-                else:
-                    cont_straight()
-
+                array_press(moves)
 
                 if cv2.waitKey(25) & 0xFF == ord('q'):
                     cv2.destroyAllWindows()
