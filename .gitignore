@@ -184,3 +184,5 @@ training_data/*
 
 ats*
 models
+tmp/
+*~

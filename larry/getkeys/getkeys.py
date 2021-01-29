@@ -24,7 +24,8 @@ def getKeys():
             ]
             keyvals = [1 if i else 0 for i in keyvals]
             keyvals = json.dumps(keyvals)
-            with open("/tmp/pyplays-keypress.txt", "a") as f:
+            print(keyvals)
+            with open("./tmp/pyplays-keypress.txt", "a") as f:
                 f.write(keyvals + "\n")
 
 
