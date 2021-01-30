@@ -186,3 +186,7 @@ ats*
 models
 tmp/
 *~
+
+training_data_balanced.npy
+model_alexnet*
+checkpoint

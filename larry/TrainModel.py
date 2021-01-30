@@ -1,6 +1,6 @@
 import numpy as np
 from datetime import datetime
-from larry.alexnet import alexnet
+from alexnet import alexnet
 
 def main(training_data):
 

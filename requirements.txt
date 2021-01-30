@@ -6,5 +6,5 @@ pyautogui
 mss
 pandas
 pywin32
-# tflearn
+tflearn
 tensorflow

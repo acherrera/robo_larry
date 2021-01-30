@@ -5,7 +5,6 @@ driving safe? Well fear no more, I'm attempting to do away with all that boring 
 automating it! No problem.... right? 
 
 
-
 # Dev Diary
 
 ## Day 1 - 2 hours
@@ -219,3 +218,7 @@ advanced driving
     Back Left: 189
     back_right: 187
     Empty: 9129
+
+## Day 18 and nearly a year later
+
+Converted it all to windows
