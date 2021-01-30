@@ -1,2 +1,0 @@
-model_checkpoint_path: "/home/tony/Repos/robo_larry/ats-0.001-alexnetv2-8-epochs.model"
-all_model_checkpoint_paths: "/home/tony/Repos/robo_larry/ats-0.001-alexnetv2-8-epochs.model"
