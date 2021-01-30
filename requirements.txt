@@ -5,5 +5,6 @@ opencv-python
 pyautogui
 mss
 pandas
+pywin32
 # tflearn
-# tensorflow==1.1.0
+tensorflow

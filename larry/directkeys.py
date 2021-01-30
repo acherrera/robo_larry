@@ -60,8 +60,45 @@ def ReleaseKey(hexKeyCode):
     x = Input( ctypes.c_ulong(1), ii_ )
     ctypes.windll.user32.SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
 
+# Actually used for key presses
+
+def straight():
+    PressKey(W)
+    ReleaseKey(A)
+    ReleaseKey(D)
+
+def left():
+    PressKey(A)
+    ReleaseKey(W)
+    ReleaseKey(D)
+    ReleaseKey(A)
+
+def right():
+    PressKey(D)
+    ReleaseKey(A)
+    ReleaseKey(W)
+    ReleaseKey(D)
+
+def slow():
+    PressKey(S)
+    ReleaseKey(W)
+    ReleaseKey(A)
+    ReleaseKey(D)
+
+
+def cruise():
+    ReleaseKey(S)
+    ReleaseKey(W)
+    ReleaseKey(A)
+    ReleaseKey(D)
+
+
+
 if __name__ == '__main__':
-    PressKey(0x11)
+    print("Starting in 5 seconds....")
+    time.sleep(5)
+    straight()    
     time.sleep(1)
-    ReleaseKey(0x11)
+    slow()
     time.sleep(1)
+    cruise()
