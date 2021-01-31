@@ -6,9 +6,20 @@ from getkeys import key_check
 from datetime import datetime
 from grabscreen import grab_screen
 
+
+f_ =  [1,0,0,0,0,0,0,0]
+f_l = [0,1,0,0,0,0,0,0]
+f_r = [0,0,1,0,0,0,0,0] 
+l_ =  [0,0,0,1,0,0,0,0]
+r_ =  [0,0,0,0,1,0,0,0]
+b_ =  [0,0,0,0,0,1,0,0]
+b_l = [0,0,0,0,0,0,1,0]
+b_r = [0,0,0,0,0,0,0,1]
+_ =   [0,0,0,0,0,0,0,0]
+
 def keys_to_output(keys):
     """
-    Convert keys to a multi-hot array. Allowing for combinations of values
+    Convert keys to a one-hot array. Allowing for combinations of values
     being pressed at the same time
 
     [W, A, S, D] boolean values.
@@ -20,6 +31,27 @@ def keys_to_output(keys):
     for i in range(len(options)):
         if options[i] in keys:
             output[i] = 1
+
+    if output == [1,0,0,0]:
+        output = f_
+    elif output == [0,1,0,0]:
+        output = l_
+    elif output == [0,0,0,1]:
+        output = r_
+    elif output == [1,1,0,0]:
+        output = f_l
+    elif output == [1,0,0,1]:
+        output = f_r
+    elif output == [0,0,0,1]:
+        output = r_
+    elif output == [0,0,1,0]:
+        output = b_
+    elif output == [0,1,1,0]:
+        output = b_l
+    elif output == [0,0,1,1]:
+        output = b_r
+    elif output == [0,0,0,0]:
+        output = _
 
     return output
 
@@ -55,7 +87,7 @@ def main(debug=False):
         time.sleep(1)
 
     while(True):
-        window_size = (0, 40, 1024, 748)
+        window_size = (0, 0, 1920, 1080)
         screen = grab_screen(region=window_size)
         last_time = time.time()
         screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
@@ -78,4 +110,4 @@ def main(debug=False):
             np.save(file_name,training_data)
 
 if __name__ == "__main__":
-    main()
+    main(debug=True)
